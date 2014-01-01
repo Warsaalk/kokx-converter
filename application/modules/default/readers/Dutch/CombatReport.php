@@ -96,19 +96,17 @@ class Default_Reader_Dutch_CombatReport
         $this->_report = new Default_Model_CombatReport();
 
         $matches = array();
-
-        if (preg_match('#^De volgende vloten kwamen elkaar tegen op \(([0-9]{2}).([0-9]{2}).([0-9]{4}) ([0-9]{2}):([0-9]{2}):([0-9]{2})\):#i', $this->_source, $matches)) {
+        if (preg_match('#^De volgende vloten kwamen elkaar tegen op \(([0-9]{2}).([0-9]{2}).([0-9]{4}) ([0-9]{2}):([0-9]{2}):([0-9]{2})\)#i', $this->_source, $matches)) {
             $this->_report->setTime(new DateTime($matches[3] . ":" . $matches[2] . ":" . $matches[1] . " " . $matches[4] . ":" . $matches[5] . ":" . $matches[6]));
         } else {
             throw new Exception('Bad CR');
         }
 
-        $this->_source = substr($this->_source, strlen($matches[0]));
 
-        while (preg_match('#(Aanvaller|Verdediger) (.*) \[([0-9]:[0-9]{1,3}:[0-9]{1,2})\]#i', $this->_source)) {
+        $this->_source = substr($this->_source, strlen($matches[0]));
+        while (preg_match('#(Aanvaller|Verdediger) (.*?)\s+\[([0-9]:[0-9]{1,3}:[0-9]{1,2})\]#i', $this->_source)) {
             $this->_report->addRound($this->_parseRound());
         }
-
         $this->_parseResult();
 
         // check if we should merge multiple fleets of the same attacker or defender into one
@@ -167,6 +165,7 @@ class Default_Reader_Dutch_CombatReport
 
             $fleet->setPlayer($matches[2]);
 
+
             if ($matches[9] != 'vernietigd.') {
                 $matches[10] = str_replace(array("\n", "\r", "  "), "\t", $matches[10]);
                 $matches[11] = str_replace(array("\n", "\r", "  "), "\t", $matches[11]);
@@ -174,7 +173,25 @@ class Default_Reader_Dutch_CombatReport
                 // add the ships info
                 $ships   = explode("\t", trim($matches[10]));
                 $numbers = explode("\t", trim($matches[11]));
-
+                
+                // Fix wierd error
+                if (count($ships) == 1 && strlen($ships[0]) > 30) {
+                    $ships = explode(" ", $ships[0]);
+                    
+                    foreach ($ships as $elem) {
+                        if (preg_match('/^[A-Z]\.$/', $elem)) {
+                            $concat = $elem;
+                            continue;
+                        }
+                        $result[] = strtolower($concat.$elem);
+                        $concat = '';
+                    }
+                    
+                    $ships = $result;
+                    $numbers = explode(" ", $numbers[0]);
+                    
+                }
+                
                 foreach ($ships as $key => $ship) {
                     $fleet->addShip($this->_createShip($ship, $this->_convertToInt($numbers[$key])));
                 }
@@ -213,7 +230,7 @@ class Default_Reader_Dutch_CombatReport
     protected function _createShip($name, $count)
     {
         $name = trim(str_replace(' ', '', strtolower($name)));
-
+        
         switch ($name) {
             // ships
             case 'k.vrachtschip':
@@ -284,7 +301,7 @@ class Default_Reader_Dutch_CombatReport
                 $name = Default_Model_Ship::LARGE_SHIELD_DOME;
                 break;
         }
-
+        
         return new Default_Model_Ship($name, $count);
     }
 
@@ -308,9 +325,9 @@ class Default_Reader_Dutch_CombatReport
                 $matches = array();
                 preg_match('#' . $regex . '#si', $this->_source, $matches);
 
-                $this->_report->setLoot((int) str_replace('.', '', $matches[1]),
-                                        (int) str_replace('.', '', $matches[2]),
-                                        (int) str_replace('.', '', $matches[3]));
+                $this->_report->setLoot((float) str_replace('.', '', $matches[1]),
+                                        (float) str_replace('.', '', $matches[2]),
+                                        (float) str_replace('.', '', $matches[3]));
             } else {
                 $this->_report->setWinner(Default_Model_CombatReport::DEFENDER);
             }
@@ -320,26 +337,26 @@ class Default_Reader_Dutch_CombatReport
 
         // get the attacker's losses
         $matches = array();
-        preg_match('#De aanvaller heeft een totaal van ([0-9.]*) eenheden verloren.#i', $this->_source, $matches);
+        preg_match('#aanvaller heeft een totaal van ([0-9.]*) eenheden verloren.#i', $this->_source, $matches);
 
-        $this->_report->setLossesAttacker((int) str_replace('.', '', $matches[1]));
+        $this->_report->setLossesAttacker((float) str_replace('.', '', $matches[1]));
 
         // get the defender's losses
         $matches = array();
-        preg_match('#De verdediger heeft een totaal van ([0-9.]*) eenheden verloren.#i', $this->_source, $matches);
+        preg_match('#verdediger heeft een totaal van ([0-9.]*) eenheden verloren.#i', $this->_source, $matches);
 
-        $this->_report->setLossesDefender((int) str_replace('.', '', $matches[1]));
+        $this->_report->setLossesDefender((float) str_replace('.', '', $matches[1]));
 
         // get the debris
         $matches = array();
         preg_match('#in de ruimte zweven nu ([0-9.]*) Metaal en ([0-9.]*) Kristal.#i', $this->_source, $matches);
 
-        $this->_report->setDebris((int) str_replace('.', '', $matches[1]), (int) str_replace('.', '', $matches[2]));
+        $this->_report->setDebris((float) str_replace('.', '', $matches[1]), (float) str_replace('.', '', $matches[2]));
 
         // moonchance
         $matches = array();
         if (preg_match('#De kans dat een maan ontstaat uit het puin is ([0-9]{1,2})#i', $this->_source, $matches)) {
-            $this->_report->setMoonChance((int) str_replace('.', '', $matches[1]));
+            $this->_report->setMoonChance((float) str_replace('.', '', $matches[1]));
         }
 
         // moon creation
@@ -426,6 +443,6 @@ class Default_Reader_Dutch_CombatReport
      */
     protected function _convertToInt($number)
     {
-        return (int) str_replace('.', '', $number);
+        return (float) str_replace('.', '', $number);
     }
 }

@@ -143,6 +143,14 @@ class Default_Model_CombatReport
      * @var string
      */
     protected $_winner;
+	
+	 /**
+     * Deuterium costs
+     *
+     * @var int
+     */
+	
+	protected $_deuteriumCosts;
 
 
     /**
@@ -191,6 +199,30 @@ class Default_Model_CombatReport
     public function getRaids()
     {
         return $this->_raids;
+    }
+	
+	/**
+     * Set the Deuterium costs.
+     *
+     * @param array $raids array of {@link Default_Model_deuteriumCosts}'s
+     *
+     * @return Default_Model_DeuteriumCosts
+     */
+    public function setDeuteriumCosts(array $deuterium)
+    {
+        $this->_deuteriumCosts = $deuterium;
+
+        return $this;
+    }
+
+    /**
+     * Get the deuterium costs
+     *
+     * @return array
+     */
+    public function getDeuteriumCosts()
+    {
+        return $this->_deuteriumCosts;
     }
 
     /**

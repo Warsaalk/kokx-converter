@@ -42,7 +42,8 @@ class Default_Service_CombatReport
         'kokx-nolines' => 'kokx-nolines',
         'tsjerk'       => 'Albert Fish',
         'virus'        => 'ViRuS',
-        'nexus'        => 'Nexus'
+        'nexus'        => 'Nexus',
+        'vii'          => 'Vii'
     );
 
     /**
@@ -81,7 +82,12 @@ class Default_Service_CombatReport
             $report->setHarvestReports(Default_Reader_Reader::readHarvestReports($data['harvest_reports']));
         }
         if (isset($data['raids']) && !empty($data['raids']) && is_string($data['raids'])) {
+            $data['raids'] = utf8_encode($data['raids']);
             $report->setRaids(Default_Reader_Reader::readRaids($data['raids']));
+        }       
+        // deuterium costs
+        if (isset($data['deuterium']) && !empty($data['deuterium']) && is_string($data['deuterium'])) {
+            $report->setDeuteriumCosts(Default_Reader_Reader::readDeuteriumCosts($data['deuterium']));
         }
 
         $this->_data = $data;
@@ -110,6 +116,9 @@ class Default_Service_CombatReport
                 break;
             case 'kokx-nolines':
                 return new Default_Renderer_KokxNolines($settings);
+                break;
+            case 'vii':
+                return new Default_Renderer_Vii($settings);
                 break;
             case 'kokx':
             default:

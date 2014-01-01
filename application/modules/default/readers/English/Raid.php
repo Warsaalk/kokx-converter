@@ -85,9 +85,9 @@ class Default_Reader_English_Raid
             // temporarily, the attacker and defender losses will be 0
             // until we implement good support for this
             $raids[] = new Default_Model_Raid(
-                (int) str_replace('.', '', $match[1]),
-                (int) str_replace('.', '', $match[2]),
-                (int) str_replace('.', '', $match[3]),
+                (float) str_replace('.', '', $match[1]),
+                (float) str_replace('.', '', $match[2]),
+                (float) str_replace('.', '', $match[3]),
                 0,
                 0
             );

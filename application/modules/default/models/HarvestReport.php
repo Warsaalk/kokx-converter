@@ -72,6 +72,13 @@ class Default_Model_HarvestReport
      * @var int
      */
     protected $_crystal;
+	
+	/**
+     * Harvested coordinate.
+     *
+     * @var int
+     */
+    protected $_coordinates;
 
 
     /**
@@ -86,7 +93,7 @@ class Default_Model_HarvestReport
      *
      * @return void
      */
-    public function __construct($recyclers, $capacity, $fieldMetal, $fieldCrystal, $metal, $crystal)
+    public function __construct($recyclers, $capacity, $coordinates, $fieldMetal, $fieldCrystal, $metal, $crystal)
     {
         $this->_recyclers    = $recyclers;
         $this->_capacity     = $capacity;
@@ -94,8 +101,19 @@ class Default_Model_HarvestReport
         $this->_fieldCrystal = $fieldCrystal;
         $this->_metal        = $metal;
         $this->_crystal      = $crystal;
+		$this->_coordinates	 = $coordinates;
     }
 
+	/**
+     * Get harvested coordinates
+     *
+     * @return int
+     */
+    public function getCoordinates()
+    {
+        return $this->_coordinates;
+    }
+	
     /**
      * Get the number of recyclers.
      *

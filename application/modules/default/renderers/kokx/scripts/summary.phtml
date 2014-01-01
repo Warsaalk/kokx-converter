@@ -40,11 +40,13 @@ $defenderResult = $this->totalDebris - $this->report->getLossesDefender();
 ?>
     <?= $this->translate("The attacker lost a total of %s units.", $this->colorNumber($attackerResult, '#FC850C')) . "\n" ?>
     <? if ($defenderResult > 0): ?>
-        <?= $this->translate("The defender lost a total of %s units.", $this->colorNumber(abs($defenderResult), '#FC850C')) ?>
+        <?= $this->translate("The defender made a profit of %s units.", $this->colorNumber(abs($defenderResult), '#FC850C')) . "\n" ?>
     <? else: ?>
-        <?= $this->translate("The defender made a profit of %s units.", $this->colorNumber(abs($defenderResult), '#FC850C')) ?>
+        <?= $this->translate("The defender lost a total of %s units.", $this->colorNumber(abs($defenderResult), '#FC850C')) . "\n" ?>
     <? endif; ?>
 <? endif; ?>
 
-<? /* and a link to the Converter site*/ ?>
+<? /* and a link to the Converter site*/
+if ($this->totalFuel == 0) {?>
 [size=10][url=<?= LINK ?>]Converted by Kokx's CR Converter <?= VERSION ?> (skin: kokx)[/url][/size][/align]
+<?}?>

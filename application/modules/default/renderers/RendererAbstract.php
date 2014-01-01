@@ -135,12 +135,13 @@ abstract class Default_Renderer_RendererAbstract implements Default_Renderer_Ren
         // stats
         $totalLosses = $report->getLossesAttacker() + $report->getLossesDefender();
 
-        return $this->getView()->translate("%s vs %s (A: %s, D: %s) [TOT: %s]",
+        return $this->getView()->translate("[TOT: %s] %s vs. %s (A: %s, V: %s)",
+        
+            $this->getView()->formatNumber($totalLosses),
             implode($this->getView()->translate(" & "), $attackers),
             implode($this->getView()->translate(" & "), $defenders),
             $this->getView()->formatNumber($report->getLossesAttacker()),
-            $this->getView()->formatNumber($report->getLossesDefender()),
-            $this->getView()->formatNumber($totalLosses));
+            $this->getView()->formatNumber($report->getLossesDefender()));
     }
 
     /**
@@ -220,6 +221,8 @@ abstract class Default_Renderer_RendererAbstract implements Default_Renderer_Ren
     public function _renderResult()
     {
         $this->getView()->totalDebris = 0;
+	$this->getView()->raidDeutRes = 0;
+
         foreach ($this->_report->getHarvestReports() as $hr) {
             $this->getView()->totalDebris += $hr->getMetal() + $hr->getCrystal();
         }
@@ -227,12 +230,22 @@ abstract class Default_Renderer_RendererAbstract implements Default_Renderer_Ren
         $this->getView()->totalRaids = $this->_report->getMetal() + $this->_report->getCrystal() + $this->_report->getDeuterium();
         foreach ($this->_report->getRaids() as $raid) {
             $this->getView()->totalRaids += $raid->getMetal() + $raid->getCrystal() + $raid->getDeuterium();
+	    $this->getView()->raidDeutRes += $raid->getDeuterium();
         }
-
-        return $this->_renderWinnerLoot()
-             . $this->_renderLossesMoon()
-             . $this->_renderDebris()
-             . $this->_renderSummary();
+        
+        // Fuel costs
+	$this->getView()->totalFuel = 0;
+        if ($this->_report->getDeuteriumCosts() > 0) {
+                
+                foreach ($this->_report->getDeuteriumCosts() as $fuel) {
+                    $this->getView()->totalFuel += $fuel->getDeuteriumCosts();
+                }
+        }
+            return $this->_renderWinnerLoot()
+                 . $this->_renderLossesMoon()
+                 . $this->_renderDebris()
+                 . $this->_renderSummary()
+		 . $this->_renderAdvancedSummary();
     }
 
     /**
@@ -274,4 +287,15 @@ abstract class Default_Renderer_RendererAbstract implements Default_Renderer_Ren
     {
         return $this->getView()->render('summary.phtml');
     }
+
+    /**
+     * Render the deuterium costs.
+     *
+     * @return string
+     */
+	
+	public function _renderAdvancedSummary()
+	{
+		return $this->getView()->render('advancedsummary.phtml');
+	}
 }

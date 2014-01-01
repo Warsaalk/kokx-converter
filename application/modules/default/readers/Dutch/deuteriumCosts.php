@@ -29,46 +29,37 @@
  * @package    Default
  * @subpackage Readers_Dutch
  */
-class Default_Reader_English_HarvestReport
+class Default_Reader_Dutch_deuteriumCosts
 {
 
     /**
-     * Parse a harvest report
+     * Parse a deuterium costs
      *
      * @param string $source
      *
-     * @return array  of {@link Default_Model_HarvestReport}'s
+     * @return array  of {@link Default_Model_DeuteriumCosts}'s
      */
     public function parse($source)
     {
         $reports = array();
 
         /**
-         * Example report:
-			 Your recycler(s) (1) have a total cargo capacity of 20.000.
-			 At the target [1:305:15], 0 Metal and 3.000 Crystal are floating in space. 
-			 You have harvested 0 Metal and 3.000 Crystal.
+         Example report:
+		 
+         Brandstofverbruik: 213.901 Deuterium
          */
-        $regex  = 'Your recycler\(s\) \(([0-9.]*?)\) cargo capacity of ([0-9.]*?).';
-        $regex .= 'At the target \[([0-9.]*?:[0-9.]*?:[0-9.]*?)\], ([0-9.]*?) metal and ([0-9.]*?) crystal are floating in space.';
-        $regex .= 'have harvested ([0-9.]*?) metal and ([0-9.]*?) crystal';
+        $regex  = 'Brandstofverbruik: ([0-9.]*?) Deuterium';
 
         $matches = array();
 
         preg_match_all('/' . $regex . '/i', $source, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $match) {
-            $reports[] = new Default_Model_HarvestReport(
-                (float) str_replace('.', '', $match[1]),
-                (float) str_replace('.', '', $match[2]),
-                (float) str_replace('.', '', $match[3]),
-                (float) str_replace('.', '', $match[4]),
-                (float) str_replace('.', '', $match[5]),
-				(float) str_replace('.', '', $match[6]),
-                (float) str_replace('.', '', $match[7])
+            $reports[] = new Default_Model_DeuteriumCosts (
+                (float) str_replace('.', '', $match[1])
             );
         }
-
+        
         return $reports;
     }
 }

@@ -21,8 +21,8 @@
  * @package    Index
  */
 
-define('VERSION', '2.0.1');
-define('LINK', 'http://converter.kokx.nl/');
+define('VERSION', '2.0.3 (Modified by Vii & Warsaalk)');
+define('LINK', 'http://converter.dijkman-winters.nl/');
 
 define('GOOGLE_AD_CLIENT', 'pub-2117246455436779');
 define('GOOGLE_AD_SLOT', '0492312042');

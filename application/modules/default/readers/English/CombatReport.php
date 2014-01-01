@@ -97,7 +97,7 @@ class Default_Reader_English_CombatReport
 
         $matches = array();
 
-        if (preg_match('#^On \(([0-9]{2}).([0-9]{2}).([0-9]{4}) ([0-9]{2}):([0-9]{2}):([0-9]{2})\) the following fleets met in battle:#i', $this->_source, $matches)) {
+        if (preg_match('#^On \(([0-9]{2}).([0-9]{2}).([0-9]{4}) ([0-9]{2}):([0-9]{2}):([0-9]{2})\) the following fleets met in battle#i', $this->_source, $matches)) {
             $this->_report->setTime(new DateTime($matches[3] . ":" . $matches[2] . ":" . $matches[1] . " " . $matches[4] . ":" . $matches[5] . ":" . $matches[6]));
         } else {
             throw new Exception('Bad CR');
@@ -105,7 +105,7 @@ class Default_Reader_English_CombatReport
 
         $this->_source = substr($this->_source, strlen($matches[0]));
 
-        while (preg_match('#(Attacker|Defender) (.*) \[([0-9]:[0-9]{1,3}:[0-9]{1,2})\]#i', $this->_source)) {
+        while (preg_match('#(Attacker|Defender) (.*?)\+s\[([0-9]:[0-9]{1,3}:[0-9]{1,2})\]#i', $this->_source)) {
             $this->_report->addRound($this->_parseRound());
         }
 
@@ -308,9 +308,9 @@ class Default_Reader_English_CombatReport
                 $matches = array();
                 preg_match('#' . $regex . '#si', $this->_source, $matches);
 
-                $this->_report->setLoot((int) str_replace('.', '', $matches[1]),
-                                        (int) str_replace('.', '', $matches[2]),
-                                        (int) str_replace('.', '', $matches[3]));
+                $this->_report->setLoot((float) str_replace('.', '', $matches[1]),
+                                        (float) str_replace('.', '', $matches[2]),
+                                        (float) str_replace('.', '', $matches[3]));
             } else {
                 $this->_report->setWinner(Default_Model_CombatReport::DEFENDER);
             }
@@ -322,24 +322,24 @@ class Default_Reader_English_CombatReport
         $matches = array();
         preg_match('#The attacker lost a total of ([0-9.]*) units.#i', $this->_source, $matches);
 
-        $this->_report->setLossesAttacker((int) str_replace('.', '', $matches[1]));
+        $this->_report->setLossesAttacker((float) str_replace('.', '', $matches[1]));
 
         // get the defender's losses
         $matches = array();
         preg_match('#The defender lost a total of ([0-9.]*) units.#i', $this->_source, $matches);
 
-        $this->_report->setLossesDefender((int) str_replace('.', '', $matches[1]));
+        $this->_report->setLossesDefender((float) str_replace('.', '', $matches[1]));
 
         // get the debris
         $matches = array();
         preg_match('#At these space coordinates now float ([0-9.]*) metal and ([0-9.]*) crystal.#i', $this->_source, $matches);
 
-        $this->_report->setDebris((int) str_replace('.', '', $matches[1]), (int) str_replace('.', '', $matches[2]));
+        $this->_report->setDebris((float) str_replace('.', '', $matches[1]), (float) str_replace('.', '', $matches[2]));
 
         // moonchance
         $matches = array();
         if (preg_match('#The chance for a moon to be created is ([0-9]{1,2})#i', $this->_source, $matches)) {
-            $this->_report->setMoonChance((int) str_replace('.', '', $matches[1]));
+            $this->_report->setMoonChance((float) str_replace('.', '', $matches[1]));
         }
 
         // moon creation
@@ -424,6 +424,6 @@ class Default_Reader_English_CombatReport
      */
     protected function _convertToInt($number)
     {
-        return (int) str_replace('.', '', $number);
+        return (float) str_replace('.', '', $number);
     }
 }

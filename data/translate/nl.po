@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-28 05:00+0100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Pieter Kokx <pieter@kokx.nl>\n"
+"Last-Translator: Patrick R. <prennings@gmail.com>\n"
 "Language-Team: Kokx <pieter@kokx.nl>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -25,8 +25,8 @@ msgstr " & "
 
 #: application/modules/default/renderers/RendererAbstract.php:138
 #, php-format
-msgid "%s vs %s (A: %s, D: %s) [TOT: %s]"
-msgstr "%s vs %s (A: %s, V: %s) [TOT: %s]"
+msgid "[TOT: %s] %s vs. %s (A: %s, V: %s)"
+msgstr "[TOT: %s] %s vs. %s (A: %s, V: %s)"
 
 #: application/modules/default/services/CombatReport.php:119
 msgid "After the battle..."
@@ -164,6 +164,10 @@ msgstr "Naraids"
 #: application/modules/default/views/scripts/index/index.phtml:48
 msgid "Harvest Reports"
 msgstr "Puinrapporten"
+
+#: application/modules/default/views/scripts/index/index.phtml:55
+msgid "Deuterium Costs"
+msgstr "Deuterium kosten"
 
 #: application/modules/default/renderers/kokx/scripts/time.phtml:2
 msgid "On "
@@ -335,11 +339,11 @@ msgstr "Totale samenvatting winst/verlies:"
 msgid "The attacker made a profit of %s units."
 msgstr "De aanvaller heeft een totaal van %s Eenheden winst gemaakt."
 
-#: application/modules/default/renderers/kokx/scripts/summary.phtml:45
-#: application/modules/default/renderers/tsjerk/scripts/summary.phtml:41
+#: application/modules/default/renderers/kokx/scripts/summary.phtml:43
+#: application/modules/default/renderers/tsjerk/scripts/summary.phtml:39
 #, c-format
 msgid "The defender made a profit of %s units."
-msgstr "De verdediger heeft een totaal van %s Eenheden verloren."
+msgstr "De verdediger heeft een totaal van %s Eenheden winst gemaakt."
 
 #: application/modules/default/renderers/kokx/scripts/lastround.phtml:17
 #: application/modules/default/renderers/kokx/scripts/lastround.phtml:42
@@ -350,12 +354,15 @@ msgstr "Vernietigd!"
 
 #~ msgid "You have harvested "
 #~ msgstr "Je hebt "
+
 #~ msgid " crystal."
 #~ msgstr " Kristal."
+
 #~ msgid "Hide options"
 #~ msgstr "Verberg opties"
+
 #~ msgid "Je "
 #~ msgstr "Je "
+
 #~ msgid " units."
 #~ msgstr " Eenheden verloren."
-

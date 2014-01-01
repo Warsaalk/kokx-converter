@@ -22,59 +22,64 @@
  */
 ?>
 <html>
+	<head>
+		<title><?= $this->translate("Kokx's OGame CR converter") ?></title>
+		<script type="text/javascript" src="/js/main.js"></script>
+		<link rel="stylesheet" type="text/css" media="screen, handheld, projection" href="css/main.css" />
+	</head>
 
-<head>
-<title><?= $this->translate("Kokx's OGame CR converter") ?></title>
+	<body>
+		<div id="main-container">
+			<div id="lang">
+				<div id="lang-nl" class="lang<?= ($this->translate()->getTranslator()->getLocale() == 'nl') ? ' lang-selected' : ''; ?>">
+					<a href="?lang=nl">
+						<div><img src="./images/flags/Netherlands-Flag.png" alt="Netherlands" /></div>
+						<div>Nederlands</div>
+					</a>
+				</div>
+				<div id="lang-en" class="lang<?= ($this->translate()->getTranslator()->getLocale() == 'en') ? ' lang-selected' : ''; ?>">
+					<a href="?lang=en">
+						<div><img src="./images/flags/United-Kingdom-flag.png" /></div>
+						<div>English</div>
+					</a>
+				</div>
+				<div id="adsense">
+					<?= $this->render('partial/adsense.phtml'); ?>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div id="header">
+				<h1><?= $this->translate("Kokx's OGame CR converter") ?> </h1>
+				<div id="agslord"><a href="ags_winstverdeler_2013.xlsx">AGS Winstverdeler van Lord</a></div>
+				<div class="clear"></div>
+			</div>
+			
+			<div id="container">
+				<?= $this->layout()->content; ?>
+			</div>
 
-<script type="text/javascript" src="/js/main.js"></script>
-<link rel="stylesheet" type="text/css" media="screen, handheld, projection" href="/css/main.css" />
-</head>
+			<div id="footer">
+				Kokx's CR Converter  Copyright (C) 2013 kokx & Vii & Warsaalk <br/>
+				This program comes with ABSOLUTELY NO WARRANTY; for details, <a href="COPYING.html#section15">click here</a>. <br/>
+				This is free software, and you are welcome to redistribute it <br/>
+				under certain conditions; <a href="COPYING.html#terms">click here</a> for details. <br/>
+			</div>
+		</div>
 
-<body>
-<div id="container">
-    <div id="lang">
-        <div id="lang-nl" class="lang<?= ($this->translate()->getTranslator()->getLocale() == 'nl') ? ' lang-selected' : ''; ?>">
-            <a href="?lang=nl"><img src="/images/flags/Netherlands-Flag.png" alt="Netherlands" /><br />
-            Nederlands</a>
-        </div>
-        <div id="lang-en" class="lang<?= ($this->translate()->getTranslator()->getLocale() == 'en') ? ' lang-selected' : ''; ?>">
-            <a href="?lang=en"><img src="/images/flags/United-Kingdom-flag.png" /><br />
-            English</a>
-        </div>
-    </div>
-    <br />
-    <div id="header">
-        <h1><?= $this->translate("Kokx's OGame CR converter") ?></h1>
-    </div>
-    <br />
-    <div id="adsense">
-    <?= $this->render('partial/adsense.phtml'); ?>
-    </div>
-    
-    <div id="container">
-<?= $this->layout()->content; ?>
-    </div>
+		<? /* Google Analytics code */ ?>
+		<script type="text/javascript">
+		<script type="text/javascript">
 
-    <div style="margin-left: 10px;">
-<pre>
-Kokx's CR Converter  Copyright (C) 2009  Kokx
-This program comes with ABSOLUTELY NO WARRANTY; for details, <a href="COPYING.html#section15">click here</a>.
-This is free software, and you are welcome to redistribute it
-under certain conditions; <a href="COPYING.html#terms">click here</a> for details.
-</pre>
-    </div>
-</div>
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-17752066-3']);
+		  _gaq.push(['_trackPageview']);
 
-<? /* Google Analytics code */ ?>
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-    var pageTracker = _gat._getTracker("<?= GOOGLE_GA_TRACKER_ID ?>");
-    pageTracker._trackPageview();
-} catch(err) {}</script>
+		  (function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+
+		</script>
     </body>
-
-    </html>
+</html>

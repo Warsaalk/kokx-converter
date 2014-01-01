@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-28 05:00+0100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Pieter Kokx <pieter@kokx.nl>\n"
+"Last-Translator: Patrick R. <prennings@gmail.com>\n"
 "Language-Team: Kokx <pieter@kokx.nl>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -164,6 +164,10 @@ msgstr "Raids"
 #: application/modules/default/views/scripts/index/index.phtml:48
 msgid "Harvest Reports"
 msgstr "Harvest Reports"
+
+#: application/modules/default/views/scripts/index/index.phtml:55
+msgid "Deuterium Costs"
+msgstr "Deuterium Costs"
 
 #: application/modules/default/renderers/kokx/scripts/time.phtml:2
 msgid "On "
@@ -350,4 +354,3 @@ msgstr "Destroyed!"
 
 #~ msgid " crystal."
 #~ msgstr " crystal."
-

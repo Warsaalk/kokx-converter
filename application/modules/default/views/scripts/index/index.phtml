@@ -1,54 +1,75 @@
 <form method="post" action="">
-<div id="cr-container">
-    <? if ($this->error): ?>
-        <?= $this->translate("Invalid CR") . "\n" ?>
-    <? endif; ?>
-    <div id="cr-left">
-        <?= $this->formTextarea('report', $this->data['report'], array('id' => 'cr-input')) ?>
-    </div>
-    <div id="cr-right">
-        <?= $this->translate("Title:") . " " . $this->formText('title', $this->title, array('style' => 'width: 406px;')) ?><br />
-        <?= $this->formTextarea('output', $this->rendered, array('id' => 'cr-output')) ?>
-    </div>
-    <div id="cr-clear">&nbsp;</div>
-</div>
-<div id="submit-container">
-    <?= $this->formSubmit('submit', $this->translate("Convert!")) ?>
-</div>
-<div id="options-container">
-    <div id="options">
-        <h2><?= $this->translate("Generic options") ?></h2>
-        <table border="0">
-            <tr>
-                <td><label for="theme"><?= $this->translate("Skin") ?></label></td>
-                <td><?= $this->formSelect('theme', $this->settings['theme'], null, array(
-                    'kokx'         => 'kokx',
-                    'kokx-nolines' => 'kokx-nolines',
-                    'tsjerk'       => 'Albert Fish',
-                    'virus'        => 'ViRuS',
-                    'nexus'        => 'Nexus'
-                )) ?></td>
-                <td><label for="hidetime"><?= $this->translate("Hide the time") ?></label></td>
-                <td><?= $this->formCheckbox('hidetime', null, array('checked' => $this->settings['hide_time'])) ?></td>
-            </tr>
-            <tr>
-                <td><label for="middletext"><?= $this->translate("Text in the middle of the CR") ?></label></td>
-                <td><?= $this->formText('middletext', $this->settings['middle_text']) ?></td>
-                <td><label for="merge_fleets"><?= $this->translate("Merge fleets of the same player") ?></label></td>
-                <td><?= $this->formCheckbox('merge_fleets', null, array('checked' => $this->settings['merge_fleets'])) ?></td>
-            </tr>
-        </table>
-        <div>
-            <br />
-            <hr />
-            <h2><?= $this->translate("Raids") ?></h2>
-            <?= $this->formTextarea('raids', $this->data['raids'], array('rows' => 5, 'cols' => 100)) ?>
-            <br />
-            <br />
-            <hr />
-            <h2><?= $this->translate("Harvest Reports") ?></h2>
-            <?= $this->formTextarea('harvest_reports', $this->data['harvest_reports'], array('rows' => 5, 'cols' => 100)) ?>
-        </div>
-    </div>
-</div>
+	<div id="cr-container">
+		<? if ($this->error): ?>
+			<div id="cr-invalid">
+				<div id="red">
+					<div><img src="images/invalid.png" alt="infoimg" /></div>
+					<div><p><?= $this->translate("Invalid CR") . "\n" ?></p></div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		<? endif; ?>
+		<div id="cr-left" class="cr-textareas">
+			<?= $this->formTextarea('report', $this->data['report'], array('id' => 'cr-input')) ?>
+		</div>
+		<div id="cr-right" class="cr-textareas">
+			<div id="cr-title"><span><?= $this->translate("Title:") . "</span> " . $this->formText('title', $this->title, array('style' => 'width: 350px;')) ?></div>
+			<div class="clear"></div>
+			<?= $this->formTextarea('output', $this->rendered, array('id' => 'cr-output')) ?>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="submit-container">
+		<?= $this->formSubmit('submit', $this->translate("Convert!")) ?>
+		<? if($this->preview!=''): ?>
+			<div id="goto-preview"><a href="#preview-container">Preview</a></div>
+			<div class="clear"></div>
+		<? endif; ?>
+	</div>
+	<div id="options-container">
+		<div class="option">
+			<h2><?= $this->translate("Generic options") ?></h2>
+			<table id="option-table" border="0">
+				<tr>
+					<td><label for="theme"><?= $this->translate("Skin") ?>:</label></td>
+					<td><?= $this->formSelect('theme', $this->settings['theme'], null, array(
+						'kokx'         => 'kokx',
+						'kokx-nolines' => 'kokx-nolines',
+						'tsjerk'       => 'Albert Fish',
+						'virus'        => 'ViRuS',
+						'nexus'        => 'Nexus',
+						'vii'          => 'Vii'
+					)) ?></td>
+					<td><label for="hidetime"><?= $this->translate("Hide the time") ?>:</label></td>
+					<td><?= $this->formCheckbox('hidetime', null, array('checked' => $this->settings['hide_time'])) ?></td>
+				</tr>
+				<tr>
+					<td><label for="middletext"><?= $this->translate("Text in the middle of the CR") ?>:</label></td>
+					<td><?= $this->formText('middletext', $this->settings['middle_text']) ?></td>
+					<td><label for="merge_fleets"><?= $this->translate("Merge fleets of the same player") ?>:</label></td>
+					<td><?= $this->formCheckbox('merge_fleets', null, array('checked' => $this->settings['merge_fleets'])) ?></td>
+				</tr>
+			</table>
+		</div>
+		<div class="option">
+			<h2><?= $this->translate("Raids") ?></h2>
+			<?= $this->formTextarea('raids', $this->data['raids'], array('rows' => 5, 'cols' => 100)) ?>
+		</div>
+		<div class="option">
+			<h2><?= $this->translate("Harvest Reports") ?></h2>
+			<?= $this->formTextarea('harvest_reports', $this->data['harvest_reports'], array('rows' => 5, 'cols' => 100)) ?>
+		</div>
+		<div class="option">
+			<h2><?= $this->translate("Deuterium Costs") ?></h2>
+			<?= $this->formTextarea('deuterium', $this->data['deuterium'], array('rows' => 5, 'cols' => 100)) ?>
+		</div>
+	</div>
+	<? if($this->preview!=''): ?>
+	<div id="preview-container">
+		<h1>Preview</h1>
+		<div id="preview">
+			<?= $this->preview ?>
+		</div>
+	</div>
+	<? endif; ?>
 </form>

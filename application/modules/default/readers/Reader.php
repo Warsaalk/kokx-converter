@@ -78,7 +78,7 @@ class Default_Reader_Reader
      */
     public static function readHarvestReports($source)
     {
-        if (stripos($source, 'recyclers hebben een totale opslagcapaciteit van') !== false) {
+        if (stripos($source, 'recycler(s) hebben een totale opslagcapaciteit van') !== false) {
             // use the dutch reader
             $reader = new Default_Reader_Dutch_HarvestReport();
         } else if (stripos($source, 'recycler(s) have a total cargo capacity of') !== false) {
@@ -108,6 +108,28 @@ class Default_Reader_Reader
             $reader = new Default_Reader_English_Raid();
         } else {
             throw new Exception("Invalid Raid");
+        }
+
+        return $reader->parse($source);
+    }
+    
+    /**
+     * Read deuterium costs
+     *
+     * @param string $source
+     *
+     * @return array  of {@link Default_Model_DeuteriumCosts}'s
+     */
+    public static function readDeuteriumCosts($source)
+    {
+        if (preg_match("/Brandstofverbruik: ([0-9.]*?) Deuterium/i", $source)) {
+            // use the dutch reader
+            $reader = new Default_Reader_Dutch_deuteriumCosts();
+        } else if (preg_match("/([0-9.]*) metal, ([0-9.]*) crystal and ([0-9.]*) deuterium/i", $source)) {
+            // use the english reader
+            $reader = new Default_Reader_English_deuteriumCosts();
+        } else {
+            throw new Exception("Invalid Deuterium costs");
         }
 
         return $reader->parse($source);

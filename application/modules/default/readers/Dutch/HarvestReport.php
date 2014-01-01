@@ -41,31 +41,44 @@ class Default_Reader_Dutch_HarvestReport
      */
     public function parse($source)
     {
+        
+        /**
+         * Fix for non printable characters
+         * Edited on: 1/1/2013
+         */
+        
+        $source = preg_replace( '/[^[:print:]]/', '', $source);
         $reports = array();
 
         /**
-         * Example report:
-         *
-         * Je 8001 recyclers hebben een totale opslagcapaciteit van 101.264.259.
-         * In het bestemmingsveld zweven 0 metaal en 0 kristal in de ruimte.
-         * Je hebt 0 metaal en 0 kristal opgehaald.
+         Example report:
+		 
+		 Je (1200) recycler(s) hebben een totale opslagcapaciteit van 24.000.000. 
+		 In het bestemmingsveld [2:188:7] zweven 0 metaal en 5.000 kristal in de ruimte. 
+		 Je hebt 0 metaal en 5.000 kristal opgehaald.
          */
-        $regex  = 'Je ([0-9.]*?) recyclers hebben een totale opslagcapaciteit van ([0-9.]*?). ';
-        $regex .= 'In het bestemmingsveld zweven ([0-9.]*?) metaal en ([0-9.]*?) kristal in de ruimte. ';
-        $regex .= 'Je hebt ([0-9.]*?) metaal en ([0-9.]*?) kristal opgehaald.';
+        
+        /*$regex  = 'Je \(([0-9.]*?)\) recycler\(s\) hebben een totale opslagcapaciteit van ([0-9.]*?).';
+		$regex .= 'In het bestemmingsveld \[([0-9.]*?:[0-9.]*?:[0-9.]*?)\] zweven ([0-9.]*?) metaal en ([0-9.]*?) kristal in de ruimte.';
+        $regex .= 'Je hebt ([0-9.]*?) metaal en ([0-9.]*?) kristal opgehaald.';*/
+		
+		$regex  = 'Je\s*\(([0-9.]*?)\)\s*recycler\(s\)\s*hebben\s*een\s*totale\s*opslagcapaciteit\s*van\s*([0-9.]*?).\s*';
+		$regex .= 'In\s*het\s*bestemmingsveld\s*\[([0-9.]*?:[0-9.]*?:[0-9.]*?)\]\s*zweven\s*([0-9.]*?)\s*metaal\s*en\s*([0-9.]*?)\s*kristal\s*in\s*de\s*ruimte.\s*';
+        $regex .= 'Je\s*hebt\s*([0-9.]*?)\s*metaal\s*en\s*([0-9.]*?)\s*kristal\s*opgehaald.';
 
         $matches = array();
 
         preg_match_all('/' . $regex . '/i', $source, $matches, PREG_SET_ORDER);
-
+		
         foreach ($matches as $match) {
             $reports[] = new Default_Model_HarvestReport(
-                (int) str_replace('.', '', $match[1]),
-                (int) str_replace('.', '', $match[2]),
-                (int) str_replace('.', '', $match[3]),
-                (int) str_replace('.', '', $match[4]),
-                (int) str_replace('.', '', $match[5]),
-                (int) str_replace('.', '', $match[6])
+                (float) str_replace('.', '', $match[1]),
+                (float) str_replace('.', '', $match[2]),
+                (float) str_replace('.', '', $match[3]),
+                (float) str_replace('.', '', $match[4]),
+                (float) str_replace('.', '', $match[5]),
+                (float) str_replace('.', '', $match[6]),
+		(float) str_replace('.', '', $match[7])
             );
         }
 

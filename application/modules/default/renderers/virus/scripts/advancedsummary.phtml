@@ -1,0 +1,25 @@
+<?php
+/*
+Er is een totaal van [color=#FC850C][b]1.234.567[/b][/color] eenheden Deuterium gebruikt als brandstof voor de aanvallende vloten.
+De aanvallende vloten hebben een totaal van [color=#FC850C][b]-1.234.567[/b][/color] eenheden Deuterium winst gemaakt.
+ */
+
+
+if ($this->totalFuel > 0) {
+$WinLostDeut = ($this->report->getDeuterium() + $this->raidDeutRes) - $this->totalFuel;
+?>
+
+<? if ($WinLostDeut > 0): ?>
+Er is een totaal van <?= $this->colorNumber(abs($this->totalFuel)) ?> eenheden Deuterium gebruikt als brandstof voor de aanvallende vloten.
+De aanvallende vloten hebben een totaal van <?= $this->colorNumber(abs($WinLostDeut)) ?> eenheden Deuterium winst gemaakt.
+<?else:?>
+Er is een totaal van <?= $this->colorNumber(abs($this->totalFuel)) ?> eenheden Deuterium gebruikt als brandstof voor de aanvallende vloten.
+De aanvallende vloten hebben een totaal van <?= $this->colorNumber(abs($WinLostDeut)) ?> eenheden Deuterium verlies gemaakt.
+<?endif; ?>
+
+<? /* and a link to the Converter site*/ ?>
+[size=10][url=<?= LINK ?>]Converted by Kokx's CR Converter <?= VERSION ?> (skin: ViRuS)[/url][/size][/align]
+
+<?php
+}
+?>

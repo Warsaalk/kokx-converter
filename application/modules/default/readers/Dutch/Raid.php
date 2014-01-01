@@ -74,23 +74,69 @@ class Default_Reader_Dutch_Raid
          * gerepareerd : 	?
          * Gedetailleerd gevechtsrapport >> 
          */
+        
+        /**
+         * De aanvaller heeft het gevecht gewonnen! De aanvaller steelt
+         * 115.320.696 metaal, 29.494.741 kristal en 56.999.602 deuterium.
+         * 
+         * De aanvaller heeft een totaal van 3.970.546.000 eenheden verloren.
+         * De verdediger heeft een totaal van 15.036.674.000 eenheden verloren.
+         * Op deze cordinaten in de ruimte zweven nu 3.524.799.000 metaal en
+         * 1.827.296.400 kristal.
+         */
+        
+        /**
+         * This is for the advanced overview, simple and advanced can be used
+         * the system will check this by itself.
+         * 
+         * Advanced method
+         */
+        $advancedSource = preg_replace( '/[^[:print:]]/', ' ', $source);
+        print_r($advancedSource);
+        
+        $advancedRegex  = 'De aanvaller heeft het gevecht gewonnen\! De aanvaller steelt ([0-9.]*) ';
+        //$advancedRegex .= 'De aanvaller heeft een totaal van ([0-9.]*) eenheden verloren\. ';
+        //$advancedRegex .= 'De verdediger heeft een totaal van ([0-9.]*) eenheden verloren\.';
+        
+        //$advancedRegex .= 'Op deze cordinaten in de ruimte zweven nu ([0-9.]*) metaal en';
+        //$advancedRegex .= '([0-9.]*) kristal\.';
 
+        $advancedMatches = array();
+        preg_match_all('/' . $advancedRegex . '/i', $advancedSource, $advancedMatches, PREG_SET_ORDER);
+        print_r($advancedMatches);
+        /**
+         * Simple method
+         */
+        
         $regex = '([0-9.]*) metaal, ([0-9.]*) kristal en ([0-9.]*) deuterium';
-
         $matches = array();
-
+        
         preg_match_all('/' . $regex . '/i', $source, $matches, PREG_SET_ORDER);
-
-        foreach ($matches as $match) {
-            $raids[] = new Default_Model_Raid(
-                (int) str_replace('.', '', $match[1]),
-                (int) str_replace('.', '', $match[2]),
-                (int) str_replace('.', '', $match[3]),
-                0, 0 // temporarily, the attacker and defender losses will be 0
-                     // until we implement good support for this
-            );
+        
+        if (count($advancedMatches) > 0) {
+            foreach ($advancedMatches as $match) {
+                $raids[] = new Default_Model_Raid(
+                    (float) str_replace('.', '', $match[1]), // Metal
+                    (float) str_replace('.', '', $match[2]), // Cristal
+                    (float) str_replace('.', '', $match[3]), // Deuterium
+                    (float) str_replace('.', '', $match[4]), // Attacker units losts
+                    (float) str_replace('.', '', $match[5]), // Defender units losts
+                    (float) str_replace('.', '', $match[6]), // Debris metal
+                    (float) str_replace('.', '', $match[7])  // Debris kristal
+                );
+                
+            }
+        } else {
+            foreach ($matches as $match) {
+                $raids[] = new Default_Model_Raid(
+                    (float) str_replace('.', '', $match[1]), // metal
+                    (float) str_replace('.', '', $match[2]), // Cristal
+                    (float) str_replace('.', '', $match[3]), // Deuterium
+                    0, 0 // temporarily, the attacker and defender losses will be 0
+                         // until we implement good support for this
+                );
+            }
         }
-
 
         return $raids;
     }

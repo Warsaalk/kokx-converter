@@ -16,3 +16,4 @@
 # Copyright (c) 2009 Kokx
 
 AddDefaultCharset UTF-8
+AddHandler application/x-httpd-php .php .php3 .php4 .php5 .phtml .html .htm

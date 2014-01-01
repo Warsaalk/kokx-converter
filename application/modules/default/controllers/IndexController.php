@@ -69,11 +69,13 @@ class IndexController extends Zend_Controller_Action
             'report'          => '',
             'raids'           => '',
             'harvest_reports' => '',
+	    'deuterium'	      => '',
             'theme'           => 'kokx'
         );
         $this->view->error = false;
         $this->view->rendered = '';
         $this->view->title    = '';
+		$this->view->preview  = '';
 
         if ($this->getRequest()->isPost()) {
             try {
@@ -87,6 +89,8 @@ class IndexController extends Zend_Controller_Action
 
                 $this->view->rendered = $renderer->render($report);
                 $this->view->title    = $renderer->renderTitle($report);
+				$preview			  = Zend_Markup::factory('Bbcode');
+				$this->view->preview  = $preview->render( $this->view->rendered );
             } catch (Exception $e) {
                 $this->view->error = true;
             }

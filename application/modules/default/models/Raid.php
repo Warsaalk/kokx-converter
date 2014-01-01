@@ -66,6 +66,20 @@ class Default_Model_Raid
      * @var int
      */
     protected $_lossesDefender;
+    
+     /**
+     * Metal debris made in this raid.
+     *
+     * @var int
+     */
+    protected $_debrisMetal;
+    
+    /**
+     * Cristal debris made in this raid.
+     *
+     * @var int
+     */
+    protected $_debrisCristal;
 
 
     /**
@@ -76,16 +90,21 @@ class Default_Model_Raid
      * @param int $deuterium
      * @param int $lossesAttacker
      * @param int $lossesDefender
+     * @param int $debrisMetal
+     * @param int $debrisCristal
      *
      * @return void
      */
-    public function __construct($metal, $crystal, $deuterium, $lossesAttacker, $lossesDefender)
+    public function __construct($metal, $crystal, $deuterium, $lossesAttacker, $lossesDefender, $debrisMetal = NULL, $debrisCristal = NULL)
     {
         $this->_metal          = $metal;
         $this->_crystal        = $crystal;
         $this->_deuterium      = $deuterium;
         $this->_lossesAttacker = $lossesAttacker;
         $this->_lossesDefender = $lossesDefender;
+        
+        if ($debrisMetal > 0) { $this->_debrisMetal = $debrisMetal; } else { $this->_debrisMetal = 0; }
+        if ($debrisCristal > 0) { $this->_debrisCristal = $debrisCristal; } else { $this->debrisCristal = 0; }
     }
 
     /**
@@ -136,5 +155,25 @@ class Default_Model_Raid
     public function getLossesDefender()
     {
         return $this->_lossesDefender;
+    }
+    
+     /**
+     * Get the metal debris
+     *
+     * @return int
+     */
+    public function getDebrisMetal()
+    {
+        return $this->_debrisMetal;
+    }
+    
+    /**
+     * Get the cristal debris
+     *
+     * @return int
+     */
+    public function getDebrisCristal()
+    {
+        return $this->_debrisCristal;
     }
 }
